@@ -1,0 +1,42 @@
+name: twitch-check
+
+on:
+  schedule:
+    - cron: '*/10 * * * *' # runs every 10 minutes
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: checkout repo content
+        uses: actions/checkout@v2 # checkout the repository content to github runner
+
+      - name: setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10.8' # install the python version needed
+          
+      - name: install python packages
+        run: |
+          python -m pip install --upgrade pip
+          pip install twitchAPI==2.5.7.1 discord==2.0.0
+          
+      - name: execute py script # run script to grab data and post it on Discord
+        env: 
+          TWITCH_SECRET: ${{ secrets.TWITCH_SECRET }}
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+        run: python twitch_check_discord_result.py Dashpong
+      
+      - name: commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add -A
+          git commit -m "update streams list" -a
+          
+      - name: push changes
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: master  
