@@ -2,6 +2,8 @@
 
 *DISCLAIMER: This is a WIP. The scripts and github action works but are undocumented for now.*
 
+[![youtube-check](https://github.com/MrEliptik/game_notifier/actions/workflows/youtube-check.yml/badge.svg)](https://github.com/MrEliptik/game_notifier/actions/workflows/youtube-check.yml)
+
 Two python scripts to check Twitch and Youtube for livestreams and videos about a game running on GitHub action to send the result with a Discord Bot.
 
 ## 🧰 Setup
